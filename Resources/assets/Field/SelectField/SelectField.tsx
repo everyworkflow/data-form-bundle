@@ -31,7 +31,7 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
             <Form.Item
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value}
+                initialValue={fieldData.value?.toString()}
                 rules={[{ required: fieldData.is_required }]}
             >
                 <Select
