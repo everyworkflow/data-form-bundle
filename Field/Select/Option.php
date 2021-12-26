@@ -66,8 +66,29 @@ class Option implements OptionInterface
         return $this->dataObject->getData(self::KEY_SORT_ORDER);
     }
 
+    public function setChildren(array $children): self
+    {
+        $this->dataObject->setData(self::KEY_CHILDREN, $children);
+
+        return $this;
+    }
+
+    public function getChildren(): array
+    {
+        return $this->dataObject->getData(self::KEY_CHILDREN) ?? [];
+    }
+
     public function toArray(): array
     {
-        return $this->dataObject->toArray();
+        $data = $this->dataObject->toArray();
+        if (isset($data[self::KEY_CHILDREN])) {
+            foreach ($data[self::KEY_CHILDREN] as $key => $item) {
+                if ($item instanceof Option) {
+                    $data[self::KEY_CHILDREN][$key] = $item->toArray();
+                }
+            }
+        }
+
+        return $data;
     }
 }

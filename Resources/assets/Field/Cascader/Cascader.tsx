@@ -42,7 +42,7 @@ const CascaderField = ({
         rules={[{ required: fieldData.is_required }]}
       >
         <Cascader
-          options={fieldData.options}
+          // options={fieldData.options}
           onChange={onChange}
           placeholder="Please select"
           showSearch={{ filter }}

@@ -9,7 +9,7 @@ import Form, { FormInstance } from "antd/lib/form";
 import Row from "antd/lib/row";
 import DataFormInterface from "@EveryWorkflow/DataFormBundle/Model/DataFormInterface";
 import moment from "moment";
-import LoadingIndicatorComponent from "@EveryWorkflow/CoreBundle/Component/LoadingIndicatorComponent";
+import LoadingIndicatorComponent from "@EveryWorkflow/PanelBundle/Component/LoadingIndicatorComponent";
 
 export const FORM_TYPE_VERTICAL = "vertical"; // default
 export const FORM_TYPE_HORIZONTAL = "horizontal";
@@ -33,6 +33,7 @@ interface DataFormProps {
   labelCol?: ColProps;
   wrapperCol?: ColProps;
   initialValues?: any;
+  formFieldMaps?: any;
 }
 
 const DataFormComponent = ({
@@ -48,6 +49,7 @@ const DataFormComponent = ({
   labelCol,
   wrapperCol,
   initialValues,
+  formFieldMaps,
 }: DataFormProps) => {
   const [internalForm] = Form.useForm();
 
@@ -117,15 +119,39 @@ const DataFormComponent = ({
 
   const getSortedFieldData = (): any => {
     return formData?.fields?.sort((a: any, b: any) => {
-      if (a === undefined || b === undefined) {
-        return 0;
-      }
-      if (a.sort_order ?? 0 === b.sort_order ?? 0) {
-        return 0;
-      }
-      return a.sort_order ?? 0 > b.sort_order ?? 0 ? 1 : -1;
+      if (a.sort_order > b.sort_order) return 1;
+      if (a.sort_order < b.sort_order) return -1;
+      return 0;
     });
   };
+
+  const renderFormField = () => (
+    <>
+      {getSortedFieldData().map((item: any, index: number) => {
+        if (formFieldMaps && formFieldMaps.hasOwnProperty(item.name)) {
+          return (
+            <FieldRenderComponent
+              key={index}
+              item={item}
+              form={form ?? internalForm}
+              mode={mode ?? FORM_TYPE_VERTICAL}
+              formType={formType}
+              FormField={formFieldMaps[item.name]}
+            />
+          );
+        }
+        return (
+          <FieldRenderComponent
+            key={index}
+            item={item}
+            form={form ?? internalForm}
+            mode={mode ?? FORM_TYPE_VERTICAL}
+            formType={formType}
+          />
+        );
+      })}
+    </>
+  )
 
   return (
     <Form
@@ -144,32 +170,12 @@ const DataFormComponent = ({
       <Suspense fallback={<LoadingIndicatorComponent />}>
         {formType === FORM_TYPE_INLINE ? (
           <Row>
-            {getSortedFieldData().map((item: any, index: number) => (
-              <FieldRenderComponent
-                key={index}
-                item={item}
-                form={form ?? internalForm}
-                mode={mode ?? FORM_TYPE_VERTICAL}
-                formType={formType}
-              />
-            ))}
+            {renderFormField()}
           </Row>
-        ) : (
-          <>
-            {getSortedFieldData().map((item: any, index: number) => (
-              <FieldRenderComponent
-                key={index}
-                item={item}
-                form={form ?? internalForm}
-                mode={mode ?? FORM_TYPE_VERTICAL}
-                formType={formType}
-              />
-            ))}
-          </>
-        )}
+        ) : renderFormField()}
       </Suspense>
       {children}
-    </Form>
+    </Form >
   );
 };
 

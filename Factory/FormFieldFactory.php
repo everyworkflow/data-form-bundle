@@ -33,13 +33,7 @@ class FormFieldFactory implements FormFieldFactoryInterface
         if ($this->container->has($className)) {
             $field = $this->container->get($className);
             if ($field instanceof AbstractFieldInterface) {
-                foreach ($data as $key => $val) {
-                    $methodName = $this->generateSetMethodName($key);
-                    if (method_exists($field, $methodName)) {
-                        $field->$methodName($val);
-                    }
-                }
-                return $field;
+                return $field->resetData($data);
             }
         }
         return null;

@@ -136,6 +136,12 @@ abstract class AbstractField implements AbstractFieldInterface
         return $this;
     }
 
+    public function resetData($data): self
+    {
+        $this->dataObject->resetData($data);
+        return $this;
+    }
+
     /**
      * Export data to array.
      */

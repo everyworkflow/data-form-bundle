@@ -23,7 +23,6 @@ const DatePickerField = ({
       onChange(dateString);
     }
   };
-  console.log("fieldData22 -->", fieldData);
 
   const getPickerVal = ():
     | "date"

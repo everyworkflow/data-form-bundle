@@ -36,7 +36,7 @@ const TextField = ({fieldData, mode = FORM_MODE_EDIT, onChange, children}: TextF
             <Form.Item
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value}
+                initialValue={fieldData.value ?? ''}
                 rules={[{required: fieldData.is_required}]}
             >
                 <Input

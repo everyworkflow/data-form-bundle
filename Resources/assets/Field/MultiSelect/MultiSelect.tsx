@@ -8,13 +8,28 @@ interface MultiSelectFieldProps extends DynamicFieldPropsInterface {
   fieldData: MultiSelectFieldInterface;
 }
 
-const MultiSelect = ({ fieldData, onChange }: MultiSelectFieldProps) => {
+const MultiSelect = ({ fieldData, onChange, form }: MultiSelectFieldProps) => {
   const { SHOW_PARENT } = TreeSelect;
   const { treeProps, options } = fieldData;
   const tProps = {
     ...treeProps,
     showCheckedStrategy: treeProps ? SHOW_PARENT : null,
   };
+
+  const handleChange = (value: any) => {
+    if (!fieldData.name) {
+      return;
+    }
+
+    console.log('MultiSelect value -->', value);
+    let updateField: any = {};
+    updateField[fieldData.name] = value;
+    form.setFieldsValue(updateField);
+    if (onChange) {
+      onChange(value);
+    }
+  };
+
   return (
     <Form.Item
       name={fieldData.name}
@@ -25,10 +40,10 @@ const MultiSelect = ({ fieldData, onChange }: MultiSelectFieldProps) => {
       <TreeSelect
         treeData={options}
         dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-        treeDefaultExpandAll
+        // treeDefaultExpandAll
         style={{ width: '100%' }}
         placeholder="Please select"
-        onChange={onChange}
+        onChange={handleChange}
         {...tProps}
         showCheckedStrategy={SHOW_PARENT}
       />

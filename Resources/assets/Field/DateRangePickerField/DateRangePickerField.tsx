@@ -13,7 +13,7 @@ interface DateRangePickerFieldProps extends DynamicFieldPropsInterface {
     fieldData: DateRangePickerFieldInterface;
 }
 
-const DateRangePickerField = ({fieldData, onChange, children}: DateRangePickerFieldProps) => {
+const DateRangePickerField = ({ fieldData, onChange, children }: DateRangePickerFieldProps) => {
     const handleChange = (value: any, dateString: [string, string]) => {
         if (onChange) {
             onChange(dateString);

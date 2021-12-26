@@ -16,18 +16,9 @@ class SelectField extends AbstractField implements SelectFieldInterface
 {
     protected string $fieldType = 'select_field';
 
-    /**
-     * @var OptionInterface[]
-     */
-    protected array $options = [];
-
     public function __construct(DataObjectInterface $dataObject)
     {
         parent::__construct($dataObject);
-        if ($dataObject->getData(self::KEY_OPTIONS)) {
-            $this->options = $dataObject->getData(self::KEY_OPTIONS);
-            $dataObject->setData(self::KEY_OPTIONS, null);
-        }
     }
 
     public function isSearchable(): bool
@@ -47,7 +38,7 @@ class SelectField extends AbstractField implements SelectFieldInterface
      */
     public function getOptions(): array
     {
-        return $this->options;
+        return $this->dataObject->getData(self::KEY_OPTIONS);
     }
 
     /**
@@ -55,7 +46,7 @@ class SelectField extends AbstractField implements SelectFieldInterface
      */
     public function setOptions(array $options): self
     {
-        $this->options = $options;
+        $this->dataObject->setData(self::KEY_OPTIONS, $options);
 
         return $this;
     }

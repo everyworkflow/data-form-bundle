@@ -32,10 +32,13 @@ const DateTimeRangePickerField = ({fieldData, onChange, children}: DateTimeRange
                 rules={[{ required: fieldData.is_required }]}
             >
                 <DatePicker.RangePicker
-                    showTime={{ format: 'HH:mm:ss' }}
                     allowClear={fieldData.allow_clear ?? false}
                     onChange={handleChange}
                     disabled={fieldData.is_disabled}
+                    showTime={{
+                        format: 'HH:mm:ss',
+                        defaultValue: [moment('00:00:00', 'HH:mm:ss'), moment('23:59:59', 'HH:mm:ss')]
+                    }}
                 />
             </Form.Item>
             {children}

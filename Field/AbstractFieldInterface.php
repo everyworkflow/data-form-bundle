@@ -64,4 +64,6 @@ interface AbstractFieldInterface extends ArrayableInterface
     public function isReadonly(): ?bool;
 
     public function setIsReadonly(bool $isReadonly): self;
+
+    public function resetData($data): self;
 }

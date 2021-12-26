@@ -9,7 +9,6 @@ import Switch from 'antd/lib/switch';
 import {FORM_MODE_VIEW} from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 import SwitchFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/SwitchFieldInterface';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
-import {CheckboxChangeEvent} from "antd/lib/checkbox";
 
 interface SwitchFieldProps extends DynamicFieldPropsInterface {
     fieldData: SwitchFieldInterface;
@@ -50,6 +49,7 @@ const SwitchField = ({fieldData, onChange, mode, children, form}: SwitchFieldPro
             <Form.Item
                 name={fieldData.name}
                 label={fieldData.label}
+                valuePropName="checked"
             >
                 <Space>
                     <Switch

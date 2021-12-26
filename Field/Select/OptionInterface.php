@@ -16,6 +16,7 @@ interface OptionInterface extends ArrayableInterface
     public const KEY_IS_ENABLED = 'is_enabled';
     public const KEY_VALUE = 'value';
     public const KEY_SORT_ORDER = 'sort_order';
+    public const KEY_CHILDREN = 'children';
 
     public function setKey(string $key): self;
 
@@ -32,4 +33,8 @@ interface OptionInterface extends ArrayableInterface
     public function setSortOrder(int $sortOrder): self;
 
     public function getSortOrder(): ?int;
+
+    public function setChildren(array $children): self;
+
+    public function getChildren(): array;
 }
