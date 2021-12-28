@@ -19,3 +19,4 @@ data_form:
         color_picker_field: EveryWorkflow\DataFormBundle\Field\ColorPickerField
         column_field: EveryWorkflow\DataFormBundle\Field\ColumnField
         row_field: EveryWorkflow\DataFormBundle\Field\RowField
+        tree_select_field: EveryWorkflow\DataFormBundle\Field\TreeSelectField

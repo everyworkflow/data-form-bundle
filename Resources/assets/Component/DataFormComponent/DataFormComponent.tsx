@@ -76,11 +76,13 @@ const DataFormComponent = ({
       Object.keys(values).forEach((key) => {
         if (Array.isArray(values[key])) {
           const newValues: Array<any> = [];
-          values[key].forEach((dateObj: any, index: number) => {
-            if (dateObj instanceof moment) {
+          values[key].forEach((item: any, index: number) => {
+            if (item instanceof moment) {
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
-              newValues[index] = dateObj.toISOString();
+              newValues[index] = item.toISOString();
+            } else {
+              newValues[index] = item;
             }
           });
           values[key] = newValues;
