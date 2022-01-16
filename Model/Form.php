@@ -140,18 +140,14 @@ class Form implements FormInterface
                 $fields[] = $field;
             }
         }
-
-        usort($fields, static function ($a, $b) {
-            if (!isset($a['sort_order'], $b['sort_order'])) {
-                return -1;
-            }
-            if ($a['sort_order'] === $b['sort_order']) {
-                return 0;
-            }
-            return ($a['sort_order'] < $b['sort_order']) ? -1 : 1;
+        uasort($fields, function ($a, $b) {
+            $aSortOrder = $a['sort_order'] ?? null;
+            $bSortOrder = $b['sort_order'] ?? null;
+            if ($aSortOrder === null && $bSortOrder !== null) return 1;
+            if ($aSortOrder > $bSortOrder) return 1;
+            if ($aSortOrder < $bSortOrder) return -1;
         });
-
-        $data[self::KEY_FIELDS] = $fields;
+        $data[self::KEY_FIELDS] = array_values($fields);
 
         $sections = [];
         foreach ($this->getSections() as $section) {
@@ -162,17 +158,14 @@ class Form implements FormInterface
             }
         }
 
-        usort($sections, static function ($a, $b) {
-            if (!isset($a['sort_order'], $b['sort_order'])) {
-                return -1;
-            }
-            if ($a['sort_order'] === $b['sort_order']) {
-                return 0;
-            }
-            return ($a['sort_order'] < $b['sort_order']) ? -1 : 1;
+        uasort($sections, function ($a, $b) {
+            $aSortOrder = $a['sort_order'] ?? null;
+            $bSortOrder = $b['sort_order'] ?? null;
+            if ($aSortOrder === null && $bSortOrder !== null) return 1;
+            if ($aSortOrder > $bSortOrder) return 1;
+            if ($aSortOrder < $bSortOrder) return -1;
         });
-
-        $data[self::KEY_SECTIONS] = $sections;
+        $data[self::KEY_SECTIONS] = array_values($sections);
 
         return $data;
     }

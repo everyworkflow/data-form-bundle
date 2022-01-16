@@ -150,7 +150,6 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
             return <DynamicComponent key={index} fieldData={item} onChange={(value: any) => {
                 onValueChange(item, value);
             }} />;
-            // return <DynamicComponent key={index} fieldData={item} />;
         }
 
         return (
@@ -165,7 +164,7 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
             <>
                 {formState.form_type === FORM_TYPE_INLINE ? (
                     <Row>
-                        {getSortedFieldData(fields ?? []).map((item: any, index: number) => {
+                        {getSortedFieldData([...fields]).map((item: any, index: number) => {
                             return (
                                 <Col key={index} className="gutter-row" span={8}>
                                     {renderField(item, index)}
@@ -173,7 +172,7 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
                             );
                         })}
                     </Row>
-                ) : getSortedFieldData(fields ?? []).map(renderField)}
+                ) : getSortedFieldData([...fields]).map(renderField)}
             </>
         )
     }

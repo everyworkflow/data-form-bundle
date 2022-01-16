@@ -42,7 +42,7 @@ const SectionRenderComponent = ({ sections }: SectionRenderComponentProps) => {
     if (sections.length) {
         return (
             <>
-                {getSortedSectionData(sections ?? []).map(renderSection)}
+                {getSortedSectionData([...sections]).map(renderSection)}
             </>
         )
     }
