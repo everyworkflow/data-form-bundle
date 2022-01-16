@@ -21,7 +21,7 @@ class FormFieldTest extends BaseFormTestCase
         $formFieldFactory = $this->getFormFieldFactory($dataFormConfigProvider);
 
         /** @var TextField $firstNameField */
-        $firstNameField = $formFieldFactory->createField([
+        $firstNameField = $formFieldFactory->create([
             'label' => 'First name',
             'name' => 'first_name',
         ]);
@@ -33,7 +33,7 @@ class FormFieldTest extends BaseFormTestCase
         );
 
         /** @var TextField $lastNameField */
-        $lastNameField = $formFieldFactory->createField([
+        $lastNameField = $formFieldFactory->create([
             'label' => 'Last name',
             'name' => 'last_name',
             'field_type' => 'text_field',
@@ -53,7 +53,7 @@ class FormFieldTest extends BaseFormTestCase
         $fieldOptionFactory = new FieldOptionFactory($this->getDataObjectFactory());
 
         /** @var SelectField $selectField */
-        $selectField = $formFieldFactory->createField([
+        $selectField = $formFieldFactory->create([
             'label' => 'Gender',
             'name' => 'gender',
             'field_type' => 'select_field',

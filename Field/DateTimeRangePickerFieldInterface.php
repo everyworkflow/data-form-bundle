@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\DataFormBundle\Field\Trait\ClearableTraitInterface;
 
-interface DateTimeRangePickerFieldInterface extends AbstractFieldInterface, ClearableTraitInterface
+interface DateTimeRangePickerFieldInterface extends BaseFieldInterface, ClearableTraitInterface
 {
     // Something
 }

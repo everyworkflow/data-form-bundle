@@ -8,13 +8,13 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Factory;
 
-use EveryWorkflow\DataFormBundle\Field\AbstractFieldInterface;
+use EveryWorkflow\DataFormBundle\Field\BaseFieldInterface;
 
 interface FormFieldFactoryInterface
 {
-    public function create(string $className, array $data = []): ?AbstractFieldInterface;
+    public function createFromClassName(string $className, array $data = []): ?BaseFieldInterface;
 
-    public function createFieldFromType(string $fieldType, array $data = []): ?AbstractFieldInterface;
+    public function createFromType(string $fieldType, array $data = []): ?BaseFieldInterface;
 
-    public function createField(array $data = []): ?AbstractFieldInterface;
+    public function create(array $data = []): ?BaseFieldInterface;
 }

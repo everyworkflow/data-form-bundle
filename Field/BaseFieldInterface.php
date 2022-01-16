@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\CoreBundle\Support\ArrayableInterface;
 
-interface AbstractFieldInterface extends ArrayableInterface
+interface BaseFieldInterface extends ArrayableInterface
 {
     public const KEY_ID = '_id';
     public const KEY_LABEL = 'label';

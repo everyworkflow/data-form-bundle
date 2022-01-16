@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-interface TextareaFieldInterface extends AbstractFieldInterface
+interface TextareaFieldInterface extends BaseFieldInterface
 {
     public const KEY_ROW_COUNT = 'row_count';
     public const KEY_IS_READONLY_TEXT = 'is_readonly_text';

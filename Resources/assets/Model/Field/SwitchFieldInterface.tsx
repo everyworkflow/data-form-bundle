@@ -2,9 +2,9 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import AbstractFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/AbstractFieldInterface";
+import BaseFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/BaseFieldInterface";
 
-interface SwitchFieldInterface extends AbstractFieldInterface {
+interface SwitchFieldInterface extends BaseFieldInterface {
     checked_label?: string;
     unchecked_label?: string;
     row_class_name?: string;

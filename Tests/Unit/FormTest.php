@@ -21,21 +21,23 @@ class FormTest extends BaseFormTestCase
         $formFactory = $this->getFormFactory($formFieldFactory);
         $fieldOptionFactory = new FieldOptionFactory($this->getDataObjectFactory());
 
-        $form  = $formFactory->create([
-            $formFieldFactory->createField([
+        $form  = $formFactory->create();
+
+        $form->setFields([
+            $formFieldFactory->create([
                 'label' => 'First name',
                 'name' => 'first_name',
             ]),
-            $formFieldFactory->createField([
+            $formFieldFactory->create([
                 'label' => 'Last name',
                 'name' => 'last_name',
             ]),
-            $formFieldFactory->createField([
+            $formFieldFactory->create([
                 'label' => 'Email',
                 'name' => 'email',
                 'input_type' => 'email',
             ]),
-            $formFieldFactory->createField([
+            $formFieldFactory->create([
                 'label' => 'Gender',
                 'name' => 'gender',
                 'field_type' => 'select_field',

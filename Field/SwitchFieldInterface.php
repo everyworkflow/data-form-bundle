@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-interface SwitchFieldInterface extends AbstractFieldInterface
+interface SwitchFieldInterface extends BaseFieldInterface
 {
     public const KEY_CHECKED_LABEL = 'checked_label';
     public const KEY_UNCHECKED_LABEL = 'unchecked_label';

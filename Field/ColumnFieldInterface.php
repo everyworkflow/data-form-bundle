@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-interface ColumnFieldInterface extends AbstractFieldInterface
+interface ColumnFieldInterface extends BaseFieldInterface
 {
     // Something
 }

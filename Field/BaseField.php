@@ -10,9 +10,9 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\CoreBundle\Model\DataObjectInterface;
 
-abstract class AbstractField implements AbstractFieldInterface
+class BaseField implements BaseFieldInterface
 {
-    protected string $fieldType = 'abstract_field';
+    protected string $fieldType = 'base_field';
 
     protected DataObjectInterface $dataObject;
 

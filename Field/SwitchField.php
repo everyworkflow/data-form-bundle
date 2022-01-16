@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-class SwitchField extends AbstractField implements SwitchFieldInterface
+class SwitchField extends BaseField implements SwitchFieldInterface
 {
     protected string $fieldType = 'switch_field';
 

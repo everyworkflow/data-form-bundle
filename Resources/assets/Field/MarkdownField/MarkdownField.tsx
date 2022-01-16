@@ -2,7 +2,7 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useContext } from 'react';
 import Form from 'antd/lib/form';
 import TextareaFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/TextareaFieldInterface';
 import MediaPanelComponent from "@EveryWorkflow/MediaManagerBundle/Component/MediaPanelComponent";
@@ -11,18 +11,28 @@ import SelectedMediaItemInterface from "@EveryWorkflow/MediaManagerBundle/Model/
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
 import { SimpleMdeReact } from "react-simplemde-editor";
 import SimpleMDE from "easymde";
-import '@EveryWorkflow/DataFormBundle/Field/MarkdownField/MarkdownStyle.scss';
+import '@EveryWorkflow/DataFormBundle/Field/MarkdownField/MarkdownStyle.less';
 import "easymde/dist/easymde.min.css";
 import UrlHelper from '@EveryWorkflow/PanelBundle/Helper/UrlHelper';
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
 interface MarkdownFieldProps extends DynamicFieldPropsInterface {
     fieldData: TextareaFieldInterface;
 }
 
-const MarkdownField = ({ fieldData, onChange, children, form }: MarkdownFieldProps) => {
+const MarkdownField = ({ fieldData, onChange, children }: MarkdownFieldProps) => {
+    const { state: formState } = useContext(FormContext);
     const [simpleMdeInstance, setSimpleMdeInstance] = useState<SimpleMDE | undefined>(undefined);
     const [isMediaSelectorEnabled, setIsMediaSelectorEnabled] = useState(false);
 
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
+    
     const getMdeInstanceCallback = useCallback((simpleMde: SimpleMDE) => {
         setSimpleMdeInstance(simpleMde);
     }, [setSimpleMdeInstance]);
@@ -33,7 +43,7 @@ const MarkdownField = ({ fieldData, onChange, children, form }: MarkdownFieldPro
             updateValues[fieldData.name] = value;
         }
         if (Object.keys(updateValues).length) {
-            form.setFieldsValue(updateValues);
+            formState.form?.setFieldsValue(updateValues);
         }
         if (onChange) {
             onChange(value);
@@ -86,14 +96,22 @@ const MarkdownField = ({ fieldData, onChange, children, form }: MarkdownFieldPro
         }
     }
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value}
-                rules={[{ required: fieldData.is_required }]}
-            >
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name] : undefined}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{ required: fieldData.is_required }]}>
                 <SimpleMdeReact
                     getMdeInstance={getMdeInstanceCallback}
                     onChange={handleChange}

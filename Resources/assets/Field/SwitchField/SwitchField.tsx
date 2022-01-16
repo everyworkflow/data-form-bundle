@@ -2,20 +2,30 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React, {useState} from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import Space from 'antd/lib/space';
 import Form from 'antd/lib/form';
 import Switch from 'antd/lib/switch';
-import {FORM_MODE_VIEW} from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 import SwitchFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/SwitchFieldInterface';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
+import { FORM_MODE_VIEW } from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 
 interface SwitchFieldProps extends DynamicFieldPropsInterface {
     fieldData: SwitchFieldInterface;
 }
 
-const SwitchField = ({fieldData, onChange, mode, children, form}: SwitchFieldProps) => {
-    const [switchStatus, setSwitchStatus] = useState(!!fieldData.value);
+const SwitchField = ({ fieldData, onChange, children }: SwitchFieldProps) => {
+    const { state: formState } = useContext(FormContext);
+    const [switchStatus, setSwitchStatus] = useState(!!fieldData.name && !!formState.initial_values[fieldData.name]);
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
 
     const handleChange = (checked: boolean) => {
         const updateValues: any = {};
@@ -23,7 +33,7 @@ const SwitchField = ({fieldData, onChange, mode, children, form}: SwitchFieldPro
             updateValues[fieldData.name] = checked;
         }
         if (Object.keys(updateValues).length) {
-            form.setFieldsValue(updateValues);
+            formState.form?.setFieldsValue(updateValues);
         }
         setSwitchStatus(checked);
         if (onChange) {
@@ -31,7 +41,7 @@ const SwitchField = ({fieldData, onChange, mode, children, form}: SwitchFieldPro
         }
     };
 
-    if (mode === FORM_MODE_VIEW) {
+    if (formState.mode === FORM_MODE_VIEW) {
         if (fieldData?.value) {
             if (fieldData.checked_label) {
                 return <span>{fieldData.checked_label}</span>;
@@ -44,19 +54,29 @@ const SwitchField = ({fieldData, onChange, mode, children, form}: SwitchFieldPro
         return <span>No</span>;
     }
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
                 valuePropName="checked"
-            >
+                initialValue={switchStatus}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}>
                 <Space>
                     <Switch
                         checkedChildren={fieldData.checked_label}
                         unCheckedChildren={fieldData.unchecked_label}
                         checked={switchStatus}
                         onChange={handleChange}
+                        disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     />
                     <span>{fieldData.help_text}</span>
                 </Space>

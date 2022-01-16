@@ -2,18 +2,28 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React, {useState} from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import Form from 'antd/lib/form';
-import Checkbox, {CheckboxChangeEvent} from 'antd/lib/checkbox';
+import Checkbox, { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import CheckFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/CheckFieldInterface';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
 interface CheckFieldProps extends DynamicFieldPropsInterface {
     fieldData: CheckFieldInterface;
 }
 
-const CheckField = ({fieldData, onChange, children, form}: CheckFieldProps) => {
+const CheckField = ({ fieldData, onChange, children }: CheckFieldProps) => {
+    const { state: formState } = useContext(FormContext);
     const [checkboxStatus, setCheckboxStatus] = useState(!!fieldData.value);
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
 
     const handleChange = (event: CheckboxChangeEvent) => {
         const updateValues: any = {};
@@ -21,7 +31,7 @@ const CheckField = ({fieldData, onChange, children, form}: CheckFieldProps) => {
             updateValues[fieldData.name] = event.target.checked;
         }
         if (Object.keys(updateValues).length) {
-            form.setFieldsValue(updateValues);
+            formState.form?.setFieldsValue(updateValues);
         }
         setCheckboxStatus(event.target.checked);
         if (onChange) {
@@ -29,17 +39,25 @@ const CheckField = ({fieldData, onChange, children, form}: CheckFieldProps) => {
         }
     };
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
             >
                 <Checkbox
                     onChange={handleChange}
-                    disabled={fieldData.is_disabled}
-                    checked={checkboxStatus}
-                >
+                    disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
+                    checked={checkboxStatus}>
                     {fieldData.help_text}
                 </Checkbox>
             </Form.Item>

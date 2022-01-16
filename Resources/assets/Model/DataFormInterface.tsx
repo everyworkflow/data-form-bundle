@@ -2,11 +2,13 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import AbstractFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/AbstractFieldInterface";
+import BaseFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/BaseFieldInterface";
+import BaseSectionInterface from "@EveryWorkflow/DataFormBundle/Model/Section/BaseSectionInterface";
 
 interface DataFormInterface {
     _id?: string;
-    fields: Array<AbstractFieldInterface>;
+    fields?: Array<BaseFieldInterface>;
+    sections?: Array<BaseSectionInterface>;
 }
 
 export default DataFormInterface;

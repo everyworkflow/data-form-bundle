@@ -2,12 +2,13 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import Form from 'antd/lib/form';
 import Select from 'antd/lib/select';
 import SelectFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/SelectFieldInterface';
 import OptionInterface from '@EveryWorkflow/DataFormBundle/Model/Field/Select/OptionInterface';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
 const { Option } = Select;
 
@@ -16,6 +17,16 @@ interface SelectFieldProps extends DynamicFieldPropsInterface {
 }
 
 const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
+    const { state: formState } = useContext(FormContext);
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
+
     const onSearch = (val: string) => {
         console.log('search:', val);
     };
@@ -26,25 +37,33 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
         }
     };
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value?.toString()}
-                rules={[{ required: fieldData.is_required }]}
-            >
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name].toString() : ''}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{ required: fieldData.is_required }]}>
                 <Select
                     showSearch={fieldData.is_searchable}
                     // style={{ width: 200 }}
                     optionFilterProp="children"
                     onChange={handleChange}
+                    disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     allowClear={fieldData.allow_clear ?? false}
                     onSearch={fieldData.is_searchable ? onSearch : undefined}
                     filterOption={(input, option) =>
                         option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }
-                >
+                    }>
                     {fieldData.options?.map(
                         (option: OptionInterface, index: number) => (
                             <Option key={index} value={option.key}>

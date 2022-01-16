@@ -2,22 +2,30 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
 import TextFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/TextFieldInterface";
-import {
-    FORM_MODE_EDIT,
-    FORM_MODE_VIEW
-} from "@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent";
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
+import { FORM_MODE_VIEW } from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 
 interface TextFieldProps extends DynamicFieldPropsInterface {
     fieldData: TextFieldInterface;
 }
 
-const TextField = ({fieldData, mode = FORM_MODE_EDIT, onChange, children}: TextFieldProps) => {
-    if (mode === FORM_MODE_VIEW) {
+const TextField = ({ fieldData, onChange, children }: TextFieldProps) => {
+    const { state: formState } = useContext(FormContext);
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
+
+    if (formState.mode === FORM_MODE_VIEW) {
         return <span>{fieldData?.value}</span>;
     }
 
@@ -31,14 +39,22 @@ const TextField = ({fieldData, mode = FORM_MODE_EDIT, onChange, children}: TextF
         }
     };
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value ?? ''}
-                rules={[{required: fieldData.is_required}]}
-            >
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ?? ''}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{ required: fieldData.is_required }]}>
                 <Input
                     onChange={handleChange}
                     allowClear={fieldData.allow_clear}
@@ -47,7 +63,7 @@ const TextField = ({fieldData, mode = FORM_MODE_EDIT, onChange, children}: TextF
                     prefix={fieldData.prefix_text}
                     suffix={fieldData.suffix_text}
                     type={(fieldData.is_disabled || fieldData.is_readonly) ? 'text' : getInputType()}
-                    disabled={fieldData.is_disabled}
+                    disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     bordered={!fieldData.is_readonly}
                     readOnly={fieldData.is_readonly}
                 />

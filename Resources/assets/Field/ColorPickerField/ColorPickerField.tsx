@@ -2,22 +2,32 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React, { useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
 import Space from 'antd/lib/space';
 import Popover from 'antd/lib/popover';
-import {ColorResult, SketchPicker} from 'react-color';
+import { ColorResult, SketchPicker } from 'react-color';
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
 import ColorPickerFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/ColorPickerFieldInterface';
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
 interface ColorPickerFieldProps extends DynamicFieldPropsInterface {
     fieldData: ColorPickerFieldInterface;
 }
 
-const ColorPickerField = ({fieldData, onChange, children, form}: ColorPickerFieldProps) => {
+const ColorPickerField = ({ fieldData, onChange, children }: ColorPickerFieldProps) => {
+    const { state: formState } = useContext(FormContext);
     const [visible, setVisible] = useState(false);
-    const [color, setColor] = useState<any>({ hex: '#ffffff' });
+    const [color, setColor] = useState<any>({ hex: (fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name] : '#ffffff' });
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
 
     const handleVisibleChange = (visible: boolean) => {
         setVisible(visible);
@@ -34,7 +44,7 @@ const ColorPickerField = ({fieldData, onChange, children, form}: ColorPickerFiel
             updateValues[fieldData.name] = color.hex;
         }
         if (Object.keys(updateValues).length) {
-            form.setFieldsValue(updateValues);
+            formState.form?.setFieldsValue(updateValues);
         }
 
         if (onChange && color.hex) {
@@ -42,14 +52,22 @@ const ColorPickerField = ({fieldData, onChange, children, form}: ColorPickerFiel
         }
     };
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={fieldData.value}
-                rules={[{ required: fieldData.is_required }]}
-            >
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name] : undefined}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{ required: fieldData.is_required }]}>
                 <Space>
                     <Popover
                         trigger="click"
@@ -60,12 +78,10 @@ const ColorPickerField = ({fieldData, onChange, children, form}: ColorPickerFiel
                             background: 'transparent',
                             boxShadow: 'none',
                         }}
-                        content={<SketchPicker color={color} onChange={handleChange} />}
-                    >
+                        content={<SketchPicker color={color} onChange={handleChange} />}>
                         <Button
-                            disabled={fieldData.is_disabled}
-                            style={{ backgroundColor: color.hex, width: 32, height: 32 }}
-                        >
+                            disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
+                            style={{ backgroundColor: color.hex, width: 32, height: 32 }}>
                             &#160;
                         </Button>
                     </Popover>

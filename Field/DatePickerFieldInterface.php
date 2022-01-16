@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\DataFormBundle\Field\Trait\ClearableTraitInterface;
 
-interface DatePickerFieldInterface extends AbstractFieldInterface, ClearableTraitInterface
+interface DatePickerFieldInterface extends BaseFieldInterface, ClearableTraitInterface
 {
     public const KEY_PICKER = 'picker';
     public const KEY_FORMAT = 'format';

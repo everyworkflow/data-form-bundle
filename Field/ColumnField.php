@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-class ColumnField extends AbstractField implements ColumnFieldInterface
+class ColumnField extends BaseField implements ColumnFieldInterface
 {
     protected string $fieldType = 'column_field';
 }

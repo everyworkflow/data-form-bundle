@@ -8,15 +8,12 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Factory;
 
-use EveryWorkflow\CoreBundle\Helper\Trait\GenerateSetMethodNameTrait;
-use EveryWorkflow\DataFormBundle\Field\AbstractFieldInterface;
+use EveryWorkflow\DataFormBundle\Field\BaseFieldInterface;
 use EveryWorkflow\DataFormBundle\Model\DataFormConfigProviderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FormFieldFactory implements FormFieldFactoryInterface
 {
-    use GenerateSetMethodNameTrait;
-
     protected ContainerInterface $container;
     protected DataFormConfigProviderInterface $dataFormConfigProvider;
 
@@ -28,33 +25,33 @@ class FormFieldFactory implements FormFieldFactoryInterface
         $this->dataFormConfigProvider = $dataFormConfigProvider;
     }
 
-    public function create(string $className, array $data = []): ?AbstractFieldInterface
+    public function createFromClassName(string $className, array $data = []): ?BaseFieldInterface
     {
         if ($this->container->has($className)) {
             $field = $this->container->get($className);
-            if ($field instanceof AbstractFieldInterface) {
+            if ($field instanceof BaseFieldInterface) {
                 return $field->resetData($data);
             }
         }
         return null;
     }
 
-    public function createFieldFromType(string $fieldType, array $data = []): ?AbstractFieldInterface
+    public function createFromType(string $fieldType, array $data = []): ?BaseFieldInterface
     {
         $fields = $this->dataFormConfigProvider->get('fields');
         if (isset($fields[$fieldType])) {
-            return $this->create($fields[$fieldType], $data);
+            return $this->createFromClassName($fields[$fieldType], $data);
         }
-        return $this->createField($data);
+        return $this->create($data);
     }
 
-    public function createField(array $data = []): ?AbstractFieldInterface
+    public function create(array $data = []): ?BaseFieldInterface
     {
         $fields = $this->dataFormConfigProvider->get('fields');
         if (isset($data['field_type'], $fields[$data['field_type']])) {
-            return $this->create($fields[$data['field_type']], $data);
+            return $this->createFromClassName($fields[$data['field_type']], $data);
         }
         $fieldType = $this->dataFormConfigProvider->get('default.field');
-        return $this->create($fields[$fieldType], $data);
+        return $this->createFromClassName($fields[$fieldType], $data);
     }
 }

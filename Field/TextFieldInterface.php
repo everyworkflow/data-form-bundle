@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-interface TextFieldInterface extends AbstractFieldInterface
+interface TextFieldInterface extends BaseFieldInterface
 {
     public const SIZE_SMALL = 'small';
     public const SIZE_NORMAL = ''; // default

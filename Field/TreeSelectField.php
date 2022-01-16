@@ -12,7 +12,7 @@ use EveryWorkflow\CoreBundle\Model\DataObjectInterface;
 use EveryWorkflow\CoreBundle\Support\ArrayableInterface;
 use EveryWorkflow\DataFormBundle\Field\Select\OptionInterface;
 
-class TreeSelectField extends AbstractField implements TreeSelectFieldInterface
+class TreeSelectField extends BaseField implements TreeSelectFieldInterface
 {
     protected string $fieldType = 'tree_select_field';
 

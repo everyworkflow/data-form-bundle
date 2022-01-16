@@ -2,7 +2,7 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-interface AbstractFieldInterface {
+interface BaseFieldInterface {
     _id?: string;
     label?: string;
     name?: string;
@@ -17,6 +17,9 @@ interface AbstractFieldInterface {
 
     is_readonly?: boolean;
     allow_clear?: boolean;
+
+    is_actionable?: boolean;
+    field_actions?: any;
 }
 
-export default AbstractFieldInterface;
+export default BaseFieldInterface;

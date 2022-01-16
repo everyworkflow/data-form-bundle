@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\DataFormBundle\Field\Trait\ClearableTraitInterface;
 
-interface ColorPickerFieldInterface extends AbstractFieldInterface, ClearableTraitInterface
+interface ColorPickerFieldInterface extends BaseFieldInterface, ClearableTraitInterface
 {
     // Something
 }

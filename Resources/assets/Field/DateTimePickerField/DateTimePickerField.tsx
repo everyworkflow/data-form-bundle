@@ -2,35 +2,63 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import Form from 'antd/lib/form';
 import DatePicker from 'antd/lib/date-picker';
 import Input from "antd/lib/input";
 import moment from 'moment';
 import DateTimePickerFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/DateTimePickerFieldInterface";
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
 interface DateTimePickerFieldProps extends DynamicFieldPropsInterface {
     fieldData: DateTimePickerFieldInterface;
 }
 
 const DateTimePickerField = ({fieldData, onChange, children}: DateTimePickerFieldProps) => {
+    const { state: formState } = useContext(FormContext);
+
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
+
     const handleChange = (value: any, dateString: string) => {
         if (onChange) {
             onChange(dateString);
         }
     };
 
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
     return (
         <>
             <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={(fieldData.value && !fieldData.is_readonly) ? moment(fieldData.value) : fieldData.value}
-                rules={[{required: fieldData.is_required}]}
-            >
+                initialValue={(() => {
+                    if (fieldData.name && formState.initial_values[fieldData.name]) {
+                        if (fieldData.is_readonly) {
+                            return formState.initial_values[fieldData.name];
+                        }
+                        return moment(formState.initial_values[fieldData.name]);
+                    }
+                    return undefined;
+                })()}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{required: fieldData.is_required}]}>
                 {fieldData.is_readonly ? (
                     <Input
+                        disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                         bordered={!fieldData.is_readonly}
                         readOnly={fieldData.is_readonly}
                     />
@@ -39,7 +67,7 @@ const DateTimePickerField = ({fieldData, onChange, children}: DateTimePickerFiel
                         showTime={{format: 'HH:mm:ss'}}
                         allowClear={fieldData.allow_clear ?? false}
                         onChange={handleChange}
-                        disabled={fieldData.is_disabled}
+                        disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     />
                 )}
             </Form.Item>

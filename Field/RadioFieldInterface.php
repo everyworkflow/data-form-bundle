@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\DataFormBundle\Field\Select\OptionInterface;
 
-interface RadioFieldInterface extends AbstractFieldInterface
+interface RadioFieldInterface extends BaseFieldInterface
 {
     public const KEY_OPTIONS = 'options';
 

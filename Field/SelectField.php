@@ -8,18 +8,12 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-use EveryWorkflow\CoreBundle\Model\DataObjectInterface;
 use EveryWorkflow\CoreBundle\Support\ArrayableInterface;
 use EveryWorkflow\DataFormBundle\Field\Select\OptionInterface;
 
-class SelectField extends AbstractField implements SelectFieldInterface
+class SelectField extends BaseField implements SelectFieldInterface
 {
     protected string $fieldType = 'select_field';
-
-    public function __construct(DataObjectInterface $dataObject)
-    {
-        parent::__construct($dataObject);
-    }
 
     public function isSearchable(): bool
     {

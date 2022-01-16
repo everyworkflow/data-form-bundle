@@ -2,55 +2,71 @@
  * @copyright EveryWorkflow. All rights reserved.
  */
 
-import React from 'react';
+import React, { useContext, useCallback } from 'react';
 import Form from 'antd/lib/form';
 import Cascader from 'antd/lib/cascader';
 import DynamicFieldPropsInterface from '@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface';
 import CascaderFieldInterface from '@EveryWorkflow/DataFormBundle/Model/Field/CascaderFieldInterface';
-import {
-  FORM_MODE_EDIT,
-  FORM_MODE_VIEW,
-} from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
+import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
+import { FORM_MODE_VIEW } from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 
 interface CascaderFieldProps extends DynamicFieldPropsInterface {
-  fieldData: CascaderFieldInterface;
+    fieldData: CascaderFieldInterface;
 }
 
 const CascaderField = ({
-  fieldData,
-  mode = FORM_MODE_EDIT,
-  onChange,
-  children,
+    fieldData,
+    onChange,
+    children,
 }: CascaderFieldProps) => {
-  if (mode === FORM_MODE_VIEW) {
-    return <span>{fieldData?.value}</span>;
-  }
+    const { state: formState } = useContext(FormContext);
 
-  function filter(inputValue: any, path: any) {
-    return path.some(
-      (option: any) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    const getErrorMessage = useCallback(() => {
+        if (formState.form_errors && fieldData.name && formState.form_errors[fieldData.name] &&
+            formState.form_errors[fieldData.name].errors && formState.form_errors[fieldData.name].errors[0]) {
+            return formState.form_errors[fieldData.name].errors[0].toString();
+        }
+        return undefined;
+    }, [fieldData, formState.form_errors]);
+
+    if (formState.mode === FORM_MODE_VIEW) {
+        return <span>{fieldData?.value}</span>;
+    }
+
+    const filter = (inputValue: any, path: any) => {
+        return path.some(
+            (option: any) =>
+                option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+        );
+    }
+
+    if (fieldData.name && formState.hidden_field_names?.includes(fieldData.name)) {
+        return null;
+    }
+
+    return (
+        <>
+            <Form.Item
+                style={!!(fieldData.name && formState.invisible_field_names?.includes(fieldData.name)) ? {
+                    display: 'none',
+                } : undefined}
+                name={fieldData.name}
+                label={fieldData.label}
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ?? ''}
+                validateStatus={getErrorMessage() ? 'error' : undefined}
+                help={getErrorMessage()}
+                rules={[{ required: fieldData.is_required }]}>
+                <Cascader
+                    // options={fieldData.options}
+                    onChange={onChange}
+                    placeholder="Please select"
+                    showSearch={{ filter }}
+                    disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
+                />
+            </Form.Item>
+            {children}
+        </>
     );
-  }
-
-  return (
-    <>
-      <Form.Item
-        name={fieldData.name}
-        label={fieldData.label}
-        initialValue={fieldData.value}
-        rules={[{ required: fieldData.is_required }]}
-      >
-        <Cascader
-          // options={fieldData.options}
-          onChange={onChange}
-          placeholder="Please select"
-          showSearch={{ filter }}
-        />
-      </Form.Item>
-      {children}
-    </>
-  );
 };
 
 export default CascaderField;

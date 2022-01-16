@@ -8,29 +8,34 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Factory;
 
-use EveryWorkflow\CoreBundle\Model\DataObjectFactoryInterface;
-use EveryWorkflow\DataFormBundle\Field\AbstractFieldInterface;
 use EveryWorkflow\DataFormBundle\Model\Form;
 use EveryWorkflow\DataFormBundle\Model\FormInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FormFactory implements FormFactoryInterface
 {
-    protected DataObjectFactoryInterface $dataObjectFactory;
-    protected FormFieldFactoryInterface $formFieldFactory;
+    protected ContainerInterface $container;
 
     public function __construct(
-        DataObjectFactoryInterface $dataObjectFactory,
-        FormFieldFactoryInterface $formFieldFactory
+        ContainerInterface $container
     ) {
-        $this->dataObjectFactory = $dataObjectFactory;
-        $this->formFieldFactory = $formFieldFactory;
+        $this->container = $container;
     }
 
-    /**
-     * @param AbstractFieldInterface[] $fields
-     */
-    public function create(array $fields = [], array $data = []): FormInterface
+    public function create(array $data = []): ?FormInterface
     {
-        return (new Form($this->dataObjectFactory->create($data), $this->formFieldFactory))->addFields($fields);
+        return $this->createByClassName(Form::class, $data);
+    }
+
+    public function createByClassName($className, array $data = []): ?FormInterface
+    {
+        if ($this->container->has($className)) {
+            $form = $this->container->get($className);
+            if ($form instanceof FormInterface) {
+                return $form->resetData($data);
+            }
+        }
+
+        return null;
     }
 }

@@ -10,7 +10,7 @@ namespace EveryWorkflow\DataFormBundle\Field;
 
 use EveryWorkflow\DataFormBundle\Field\Select\OptionInterface;
 
-interface SelectFieldInterface extends AbstractFieldInterface
+interface SelectFieldInterface extends BaseFieldInterface
 {
     public const KEY_IS_SEARCHABLE = 'is_searchable';
     public const KEY_OPTIONS = 'options';

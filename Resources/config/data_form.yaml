@@ -1,7 +1,14 @@
 data_form:
     default:
+        section: base_section
         field: text_field
+    sections:
+        base_section: EveryWorkflow\DataFormBundle\Section\BaseSection
+        card_section: EveryWorkflow\DataFormBundle\Section\CardSection
+        col_section: EveryWorkflow\DataFormBundle\Section\ColSection
+        row_section: EveryWorkflow\DataFormBundle\Section\RowSection
     fields:
+        base_field: EveryWorkflow\DataFormBundle\Field\BaseField
         text_field: EveryWorkflow\DataFormBundle\Field\TextField
         textarea_field: EveryWorkflow\DataFormBundle\Field\TextareaField
         markdown_field: EveryWorkflow\DataFormBundle\Field\MarkdownField

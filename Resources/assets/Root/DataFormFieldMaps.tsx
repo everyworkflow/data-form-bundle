@@ -5,9 +5,8 @@
 import { lazy } from 'react';
 import { MediaFormFieldMaps } from '@EveryWorkflow/MediaManagerBundle/Root/MediaFormFieldMaps';
 
-const TextField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/TextField')
-);
+import TextField from '@EveryWorkflow/DataFormBundle/Field/TextField';
+
 const TextareaField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/TextareaField')
 );
@@ -23,37 +22,26 @@ const DatePickerField = lazy(
 const TimePickerField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/TimePickerField')
 );
-const DateTimePickerField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/DateTimePickerField')
-);
+import DateTimePickerField from '@EveryWorkflow/DataFormBundle/Field/DateTimePickerField';
 const DateRangePickerField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/DateRangePickerField')
 );
 const TimeRangePickerField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/TimeRangePickerField')
 );
-const DateTimeRangePickerField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/DateTimeRangePickerField')
-);
+import DateTimeRangePickerField from '@EveryWorkflow/DataFormBundle/Field/DateTimeRangePickerField';
 const FileField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/FileField')
 );
-const CheckField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/CheckField')
-);
-const SwitchField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/SwitchField')
-);
+import CheckField from '@EveryWorkflow/DataFormBundle/Field/CheckField';
+import SwitchField from '@EveryWorkflow/DataFormBundle/Field/SwitchField';
 const RadioField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/RadioField')
 );
-const SelectField = lazy(
-  () => import('@EveryWorkflow/DataFormBundle/Field/SelectField')
-);
+import SelectField from '@EveryWorkflow/DataFormBundle/Field/SelectField';
 const Cascader = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/Cascader')
 );
-
 const TreeSelectField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/TreeSelectField')
 );

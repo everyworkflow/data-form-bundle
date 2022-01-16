@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-class TextField extends AbstractField implements TextFieldInterface
+class TextField extends BaseField implements TextFieldInterface
 {
     protected string $fieldType = 'text_field';
 

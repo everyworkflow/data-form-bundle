@@ -8,34 +8,19 @@ declare(strict_types=1);
 
 namespace EveryWorkflow\DataFormBundle\Field;
 
-use EveryWorkflow\CoreBundle\Model\DataObjectInterface;
 use EveryWorkflow\CoreBundle\Support\ArrayableInterface;
 use EveryWorkflow\DataFormBundle\Field\Select\OptionInterface;
 
-class RadioField extends AbstractField implements RadioFieldInterface
+class RadioField extends BaseField implements RadioFieldInterface
 {
     protected string $fieldType = 'radio_field';
-
-    /**
-     * @var OptionInterface[]
-     */
-    protected array $options = [];
-
-    public function __construct(DataObjectInterface $dataObject)
-    {
-        if ($dataObject->getData(self::KEY_OPTIONS)) {
-            $this->options = $dataObject->getData(self::KEY_OPTIONS);
-            $dataObject->setData(self::KEY_OPTIONS, null);
-        }
-        parent::__construct($dataObject);
-    }
 
     /**
      * @return OptionInterface[]
      */
     public function getOptions(): array
     {
-        return $this->options;
+        return $this->dataObject->getData(self::KEY_OPTIONS);
     }
 
     /**
@@ -44,13 +29,7 @@ class RadioField extends AbstractField implements RadioFieldInterface
      */
     public function setOptions(array $options): self
     {
-        $items = [];
-        foreach ($options as $option) {
-            if ($option instanceof OptionInterface) {
-                $items[] = $option;
-            }
-        }
-        $this->options = $items;
+        $this->dataObject->setData(self::KEY_OPTIONS, $options);
         return $this;
     }
 
