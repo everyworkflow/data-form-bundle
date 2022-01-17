@@ -17,8 +17,8 @@ class FormFieldTest extends BaseFormTestCase
     public function test_default_text_form_field(): void
     {
         $container = self::getContainer();
-        $dataFormConfigProvider = $this->getFormConfigProvider($container);
-        $formFieldFactory = $this->getFormFieldFactory($dataFormConfigProvider);
+        $dataFormConfigProvider = $this->getFormConfigProvider();
+        $formFieldFactory = $this->getFormFieldFactory($container);
 
         /** @var TextField $firstNameField */
         $firstNameField = $formFieldFactory->create([

@@ -18,7 +18,7 @@ class FormTest extends BaseFormTestCase
     {
         $container = self::getContainer();
         $formFieldFactory = $this->getFormFieldFactory($container);
-        $formFactory = $this->getFormFactory($formFieldFactory);
+        $formFactory = $this->getFormFactory($container);
         $fieldOptionFactory = new FieldOptionFactory($this->getDataObjectFactory());
 
         $form  = $formFactory->create();

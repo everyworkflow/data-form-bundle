@@ -10,6 +10,8 @@ use EveryWorkflow\DataFormBundle\Factory\FormFactory;
 use EveryWorkflow\DataFormBundle\Factory\FormFactoryInterface;
 use EveryWorkflow\DataFormBundle\Factory\FormFieldFactory;
 use EveryWorkflow\DataFormBundle\Factory\FormFieldFactoryInterface;
+use EveryWorkflow\DataFormBundle\Factory\FormSectionFactory;
+use EveryWorkflow\DataFormBundle\Factory\FormSectionFactoryInterface;
 use EveryWorkflow\DataFormBundle\Model\DataFormConfigProvider;
 use EveryWorkflow\DataFormBundle\Model\DataFormConfigProviderInterface;
 use EveryWorkflow\MongoBundle\Tests\BaseMongoTestCase;
@@ -17,31 +19,43 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class BaseFormTestCase extends BaseMongoTestCase
 {
-    protected function getFormConfigProvider(ContainerInterface $container): DataFormConfigProviderInterface
+    protected function getFormConfigProvider(array $configs = []): DataFormConfigProviderInterface
     {
-        return new DataFormConfigProvider($container->getParameter('data_form'));
+        return new DataFormConfigProvider([
+            'default' => [
+                'section' => 'base_section',
+                'field' => 'text_field'
+            ],
+            'sections' => [
+                'base_section' => 'EveryWorkflow\DataFormBundle\Section\BaseSection',
+                'card_section' => 'EveryWorkflow\DataFormBundle\Section\CardSection',
+                'col_section' => 'EveryWorkflow\DataFormBundle\Section\ColSection',
+                'row_section' => 'EveryWorkflow\DataFormBundle\Section\RowSection',
+            ],
+            'fields' => [
+                'base_field' => 'EveryWorkflow\DataFormBundle\Field\BaseField',
+                'text_field' => 'EveryWorkflow\DataFormBundle\Field\TextField',
+                'textarea_field' => 'EveryWorkflow\DataFormBundle\Field\TextareaField',
+                'select_field' => 'EveryWorkflow\DataFormBundle\Field\SelectField',
+                'radio_field' => 'EveryWorkflow\DataFormBundle\Field\RadioField',
+                'switch_field' => 'EveryWorkflow\DataFormBundle\Field\SwitchField',
+            ],
+            ...$configs,
+        ]);
     }
 
-    protected function getFormFieldFactory(
-        DataFormConfigProviderInterface | ContainerInterface $configProviderOrContainer
-    ): FormFieldFactoryInterface {
-        if ($configProviderOrContainer instanceof DataFormConfigProviderInterface) {
-            return new FormFieldFactory($this->getContainer(), $configProviderOrContainer);
-        }
-
-        return new FormFieldFactory(
-            $this->getContainer(),
-            $this->getFormConfigProvider($configProviderOrContainer)
-        );
+    protected function getFormFieldFactory(ContainerInterface $container): FormFieldFactoryInterface
+    {
+        return new FormFieldFactory($container, $this->getFormConfigProvider());
     }
 
-    protected function getFormFactory(
-        FormFieldFactoryInterface | ContainerInterface $formFieldFactoryOrContainer
-    ): FormFactoryInterface {
-        if ($formFieldFactoryOrContainer instanceof FormFieldFactoryInterface) {
-            return new FormFactory($this->getDataObjectFactory(), $formFieldFactoryOrContainer);
-        }
+    protected function getFormSectionFactory(ContainerInterface $container): FormSectionFactoryInterface
+    {
+        return new FormSectionFactory($container, $this->getFormConfigProvider());
+    }
 
-        return new FormFactory($this->getDataObjectFactory(), $this->getFormFieldFactory($formFieldFactoryOrContainer));
+    protected function getFormFactory(ContainerInterface $container): FormFactoryInterface
+    {
+        return new FormFactory($container);
     }
 }
