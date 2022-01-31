@@ -6,7 +6,7 @@ import AlertAction, { ALERT_TYPE_ERROR } from "@EveryWorkflow/PanelBundle/Action
 import Remote from "@EveryWorkflow/PanelBundle/Service/Remote";
 import { ACTION_SET_FORM_DATA } from "@EveryWorkflow/DataFormBundle/Reducer/FormReducer";
 
-const UpdateFormAction = (path: string) => {
+const UpdateFormAction = (path: string, payload: any) => {
     return async (dispatch: any) => {
         const handleResponse = (response: any) => {
             if (response.data_form) {
@@ -18,7 +18,7 @@ const UpdateFormAction = (path: string) => {
         };
 
         try {
-            const response: any = await Remote.get(path);
+            const response: any = await Remote.post(path, payload);
             handleResponse(response);
         } catch (error: any) {
             AlertAction({
@@ -31,3 +31,4 @@ const UpdateFormAction = (path: string) => {
 };
 
 export default UpdateFormAction;
+

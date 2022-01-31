@@ -15,8 +15,13 @@ use EveryWorkflow\DataFormBundle\Field\BaseFieldInterface;
 
 interface FormInterface extends ArrayableInterface
 {
+    public const KEY_FORM_UPDATE_PATH = 'form_update_path';
     public const KEY_FIELDS = 'fields';
     public const KEY_SECTIONS = 'sections';
+
+    public function setFormUpdatePath(string $formUpdatePath): self;
+    
+    public function getFormUpdatePath(): ?string;
 
     public function getFormFieldFactory(): FormFieldFactoryInterface;
 

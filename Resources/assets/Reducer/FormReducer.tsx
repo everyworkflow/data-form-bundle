@@ -8,7 +8,7 @@ export const ACTION_SET_STATE_DATA = 'set_state_data';
 
 export const ACTION_SET_FORM_DATA = 'set_form_data';
 
-export const ACTION_SET_FORM_UPDATE_NAMES = 'set_form_update_names';
+export const ACTION_SET_FORM_UPDATE_DATA = 'set_form_update_data';
 
 export const ACTION_SET_HIDDEN_FIELD_NAMES = 'set_hidden_field_names';
 export const ACTION_SET_INVISIBLE_FIELD_NAMES = 'set_invisible_field_names';
@@ -28,10 +28,10 @@ const FormReducer = (state: FormStateInterface, action: any) => {
                 form_data: action.payload,
             };
         }
-        case ACTION_SET_FORM_UPDATE_NAMES: {
+        case ACTION_SET_FORM_UPDATE_DATA: {
             return {
                 ...state,
-                form_update_names: action.payload,
+                form_update_data: action.payload,
             };
         }
         case ACTION_SET_HIDDEN_FIELD_NAMES: {

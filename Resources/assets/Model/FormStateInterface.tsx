@@ -23,7 +23,7 @@ interface FormStateInterface {
     invisible_field_names: Array<string>;
     disable_field_names: Array<string>;
 
-    form_update_names: Array<string>;
+    form_update_data: any;
 }
 
 export default FormStateInterface;

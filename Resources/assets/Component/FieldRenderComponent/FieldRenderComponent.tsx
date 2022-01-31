@@ -10,7 +10,7 @@ import UpdateFormAction from '@EveryWorkflow/DataFormBundle/Action/UpdateFormAct
 import { FORM_TYPE_INLINE } from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/DataFormComponent';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
-import { ACTION_SET_DISABLE_FIELD_NAMES, ACTION_SET_FORM_UPDATE_NAMES, ACTION_SET_HIDDEN_FIELD_NAMES, ACTION_SET_INVISIBLE_FIELD_NAMES } from '@EveryWorkflow/DataFormBundle/Reducer/FormReducer';
+import { ACTION_SET_FORM_UPDATE_DATA, ACTION_SET_STATE_DATA } from '@EveryWorkflow/DataFormBundle/Reducer/FormReducer';
 
 interface RenderFieldProps {
     fields: Array<BaseFieldInterface>;
@@ -38,9 +38,10 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
     }
 
     const fieldActionHandler = (field: BaseFieldInterface, value: any, actionType = 'init') => {
-        if (typeof value === 'boolean') {
-            value = Number(value);
-        }
+        // if (typeof value === 'boolean') {
+        //     value = Number(value);
+        // }
+
         const actions: Array<any> = field.field_actions[value] ?? [];
 
         let hiddenFieldNames = formState.hidden_field_names ?? [];
@@ -97,13 +98,19 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
                     break;
                 }
                 case 'update_form': {
-                    if ((field.name && !formState.form_update_names.includes(field.name)) || actionType === 'change') {
+                    if (field.name && (!Object.keys(formState.form_update_data).includes(field.name) || actionType === 'change')) {
+                        const formUpdateData: any = formState.form_update_data ?? {};
+                        if (formUpdateData.hasOwnProperty(field.name) && formUpdateData[field.name] === value) {
+                            break;
+                        }
+                        formUpdateData[field.name] = value;
                         formDispatch({
-                            type: ACTION_SET_FORM_UPDATE_NAMES,
-                            payload: [...formState.form_update_names, field.name],
+                            type: ACTION_SET_FORM_UPDATE_DATA,
+                            payload: formUpdateData,
                         });
-                        let path: string = generateFilledPath(action.path, formState.initial_values ?? {});
-                        UpdateFormAction(path)(formDispatch);
+                        if (formState.form_data && formState.form_data.form_update_path) {
+                            UpdateFormAction(formState.form_data.form_update_path, formUpdateData)(formDispatch);
+                        }
                     }
                     break;
                 }
@@ -111,16 +118,12 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
         });
 
         formDispatch({
-            type: ACTION_SET_HIDDEN_FIELD_NAMES,
-            payload: hiddenFieldNames
-        });
-        formDispatch({
-            type: ACTION_SET_DISABLE_FIELD_NAMES,
-            payload: disableFieldNames
-        });
-        formDispatch({
-            type: ACTION_SET_INVISIBLE_FIELD_NAMES,
-            payload: invisibleFieldNames
+            type: ACTION_SET_STATE_DATA,
+            payload: {
+                hidden_field_names: hiddenFieldNames,
+                disable_field_names: disableFieldNames,
+                invisibleFieldNames: invisibleFieldNames,
+            }
         });
     }
 

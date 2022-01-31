@@ -33,6 +33,17 @@ class Form implements FormInterface
         $this->formFieldFactory = $formFieldFactory;
     }
 
+    public function setFormUpdatePath(string $formUpdatePath): self
+    {
+        $this->dataObject->setData(self::KEY_FORM_UPDATE_PATH, $formUpdatePath);
+        return $this;
+    }
+
+    public function getFormUpdatePath(): ?string
+    {
+        return $this->dataObject->getData(self::KEY_FORM_UPDATE_PATH);
+    }
+
     public function getFormFieldFactory(): FormFieldFactoryInterface
     {
         return $this->formFieldFactory;

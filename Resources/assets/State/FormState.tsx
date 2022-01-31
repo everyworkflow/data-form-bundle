@@ -21,5 +21,5 @@ export const formState: FormStateInterface = {
     invisible_field_names: [],
     disable_field_names: [],
 
-    form_update_names: [],
+    form_update_data: {},
 };
