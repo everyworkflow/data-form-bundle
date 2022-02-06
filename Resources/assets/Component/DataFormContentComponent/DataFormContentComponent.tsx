@@ -37,8 +37,8 @@ const DataFormContentComponent = () => {
     }, [formState.form_data]);
 
     if (formState.form_data?.is_side_form_anchor_enable) {
-        return (
-            <>
+        if (formState.form_data?.side_form_anchor_position === 'right') {
+            return (
                 <Row>
                     <Col md={{ order: 2, span: 4 }}>
                         <Anchor affix={!panelState.is_mobile} offsetTop={55 + 16} style={{ marginBottom: 24 }}>
@@ -51,8 +51,23 @@ const DataFormContentComponent = () => {
                         {renderContent()}
                     </Col>
                 </Row>
-            </>
-        );
+            );
+        } else {
+            return (
+                <Row>
+                    <Col md={{ span: 4 }}>
+                        <Anchor affix={!panelState.is_mobile} offsetTop={55 + 16} style={{ marginBottom: 24 }}>
+                            {getSortedSectionData(formState.form_data?.sections ?? []).map((item: any) => (
+                                <Anchor.Link href={'#form-section-' + item.code} title={item.title} />
+                            ))}
+                        </Anchor>
+                    </Col>
+                    <Col md={{ span: 20 }}>
+                        {renderContent()}
+                    </Col>
+                </Row>
+            );
+        }
     }
 
     return (

@@ -15,8 +15,12 @@ use EveryWorkflow\DataFormBundle\Field\BaseFieldInterface;
 
 interface FormInterface extends ArrayableInterface
 {
+    public const SIDE_FORM_ANCHOR_POSITION_LEFT = 'left' // default
+    public const SIDE_FORM_ANCHOR_POSITION_RIGHT = 'right'
+
     public const KEY_FORM_UPDATE_PATH = 'form_update_path';
     public const KEY_IS_SIDE_FORM_ANCHOR_ENABLE = 'is_side_form_anchor_enable';
+    public const KEY_SIDE_FORM_ANCHOR_POSITION = 'side_form_anchor_position';
     public const KEY_FIELDS = 'fields';
     public const KEY_SECTIONS = 'sections';
 
@@ -27,6 +31,10 @@ interface FormInterface extends ArrayableInterface
     public function setIsSideFormAnchorEnable(bool $isSideFormAnchorEnable): self;
 
     public function isSideFormAnchorEnable(): ?bool;
+
+    public function setSideFormAnchorPosition(string $sideFormAnchorPosition): self;
+
+    public function getSideFormAnchorPosition(): ?string;
 
     public function getFormFieldFactory(): FormFieldFactoryInterface;
 

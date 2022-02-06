@@ -9,6 +9,7 @@ interface DataFormInterface {
     _id?: string;
     form_update_path?: string;
     is_side_form_anchor_enable?: boolean;
+    side_form_anchor_position?: string;
     fields?: Array<BaseFieldInterface>;
     sections?: Array<BaseSectionInterface>;
 }
