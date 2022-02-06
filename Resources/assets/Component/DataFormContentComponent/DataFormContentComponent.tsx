@@ -42,8 +42,8 @@ const DataFormContentComponent = () => {
                 <Row>
                     <Col md={{ order: 2, span: 4 }}>
                         <Anchor affix={!panelState.is_mobile} offsetTop={55 + 16} style={{ marginBottom: 24 }}>
-                            {getSortedSectionData(formState.form_data?.sections ?? []).map((item: any) => (
-                                <Anchor.Link href={'#form-section-' + item.code} title={item.title} />
+                            {getSortedSectionData(formState.form_data?.sections ?? []).map((item: any, index: number) => (
+                                <Anchor.Link key={index.toString()} href={'#form-section-' + item.code} title={item.title} />
                             ))}
                         </Anchor>
                     </Col>
@@ -57,8 +57,8 @@ const DataFormContentComponent = () => {
                 <Row>
                     <Col md={{ span: 4 }} style={{ paddingLeft: 16 }}>
                         <Anchor affix={!panelState.is_mobile} offsetTop={55 + 16} style={{ marginBottom: 24 }}>
-                            {getSortedSectionData(formState.form_data?.sections ?? []).map((item: any) => (
-                                <Anchor.Link href={'#form-section-' + item.code} title={item.title} />
+                            {getSortedSectionData(formState.form_data?.sections ?? []).map((item: any, index: number) => (
+                                <Anchor.Link key={index.toString()} href={'#form-section-' + item.code} title={item.title} />
                             ))}
                         </Anchor>
                     </Col>
