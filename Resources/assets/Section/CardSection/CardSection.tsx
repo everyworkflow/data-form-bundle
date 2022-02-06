@@ -16,6 +16,7 @@ const CardSection = ({ sectionData }: CardSectionProps) => {
     return (
         <>
             <Card
+                id={'form-section-' + sectionData.code}
                 className="app-container"
                 title={sectionData.title}
                 style={{ marginBottom: 24 }}>

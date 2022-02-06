@@ -30,6 +30,7 @@ interface DataFormPageComponentProps {
     childrenAfter?: JSX.Element | JSX.Element[];
     formSectionMaps?: any;
     formFieldMaps?: any;
+    formContent?: JSX.Element | JSX.Element[];
 }
 
 const DataFormPageComponent = ({
@@ -43,7 +44,8 @@ const DataFormPageComponent = ({
     childrenBefore,
     childrenAfter,
     formSectionMaps,
-    formFieldMaps
+    formFieldMaps,
+    formContent
 }: DataFormPageComponentProps) => {
     const { dispatch: panelDispatch } = useContext(PanelContext);
     const urlParams: any = useParams();
@@ -166,6 +168,7 @@ const DataFormPageComponent = ({
                     onSubmit={onSubmit}
                     formSectionMaps={formSectionMaps}
                     formFieldMaps={formFieldMaps}
+                    formContent={formContent}
                 />
             )}
             {childrenAfter}

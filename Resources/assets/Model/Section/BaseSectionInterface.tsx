@@ -7,6 +7,7 @@ import BaseFieldInterface from "@EveryWorkflow/DataFormBundle/Model/Field/BaseFi
 interface BaseSectionInterface {
     _id?: string;
     section_type: string;
+    code?: string;
     sections?: Array<BaseSectionInterface>;
     fields?: Array<BaseFieldInterface>;
 }

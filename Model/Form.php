@@ -44,6 +44,17 @@ class Form implements FormInterface
         return $this->dataObject->getData(self::KEY_FORM_UPDATE_PATH);
     }
 
+    public function setIsSideFormAnchorEnable(string $isSideFormAnchorEnable): self
+    {
+        $this->dataObject->setData(self::KEY_IS_SIDE_FORM_ANCHOR_ENABLE, $isSideFormAnchorEnable);
+        return $this;
+    }
+
+    public function isSideFormAnchorEnable(): ?string
+    {
+        return $this->dataObject->getData(self::KEY_IS_SIDE_FORM_ANCHOR_ENABLE);
+    }
+
     public function getFormFieldFactory(): FormFieldFactoryInterface
     {
         return $this->formFieldFactory;

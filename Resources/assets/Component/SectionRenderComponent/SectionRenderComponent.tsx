@@ -14,8 +14,8 @@ interface SectionRenderComponentProps {
 const SectionRenderComponent = ({ sections }: SectionRenderComponentProps) => {
     const { state: formState } = useContext(FormContext);
 
-    const getSortedSectionData = (formFields: Array<any>): Array<any> => {
-        return formFields?.sort((a: any, b: any) => {
+    const getSortedSectionData = (sections: Array<any>): Array<any> => {
+        return sections?.sort((a: any, b: any) => {
             if (a.sort_order > b.sort_order) return 1;
             if (a.sort_order < b.sort_order) return -1;
             return 0;

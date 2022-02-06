@@ -8,6 +8,7 @@ import BaseSectionInterface from "@EveryWorkflow/DataFormBundle/Model/Section/Ba
 interface DataFormInterface {
     _id?: string;
     form_update_path?: string;
+    is_side_form_anchor_enable?: boolean;
     fields?: Array<BaseFieldInterface>;
     sections?: Array<BaseSectionInterface>;
 }

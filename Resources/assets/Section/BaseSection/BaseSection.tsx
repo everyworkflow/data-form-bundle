@@ -13,14 +13,14 @@ interface BaseSectionProps {
 
 const BaseSection = ({ sectionData }: BaseSectionProps) => {
     return (
-        <>
+        <div id={'form-section-' + sectionData.code}>
             {(sectionData?.fields && sectionData?.fields.length > 0) && (
                 <FieldRenderComponent fields={sectionData.fields} />
             )}
             {(sectionData?.sections && sectionData?.sections.length > 0) && (
                 <SectionRenderComponent sections={sectionData.sections} />
             )}
-        </>
+        </div>
     );
 };
 

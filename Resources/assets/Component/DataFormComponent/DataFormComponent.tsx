@@ -12,7 +12,7 @@ import FormContext from "@EveryWorkflow/DataFormBundle/Context/FormContext";
 import FormReducer, { ACTION_SET_STATE_DATA } from "@EveryWorkflow/DataFormBundle/Reducer/FormReducer";
 import { formState } from "@EveryWorkflow/DataFormBundle/State/FormState";
 import { FormLabelAlign } from "antd/lib/form/interface";
-import FormContent from '@EveryWorkflow/DataFormBundle/Component/DataFormComponent/FormContent';
+import DataFormContentComponent from '@EveryWorkflow/DataFormBundle/Component/DataFormContentComponent';
 
 export const FORM_TYPE_VERTICAL = "vertical"; // default
 export const FORM_TYPE_HORIZONTAL = "horizontal";
@@ -40,6 +40,7 @@ interface DataFormProps {
     formErrors?: any;
     formSectionMaps?: any;
     formFieldMaps?: any;
+    formContent?: JSX.Element | JSX.Element[];
 }
 
 const DataFormComponent = ({
@@ -58,12 +59,13 @@ const DataFormComponent = ({
     initialValues,
     formErrors,
     formSectionMaps,
-    formFieldMaps
+    formFieldMaps,
+    formContent
 }: DataFormProps) => {
     const [state, dispatch] = useReducer(FormReducer, {
         ...formState,
         form_data: formData,
-        
+
         mode: mode,
 
         form_errors: formErrors ?? {},
@@ -173,7 +175,9 @@ const DataFormComponent = ({
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}>
                 <Suspense fallback={<LoadingIndicatorComponent />}>
-                    <FormContent />
+                    <>
+                        {formContent !== undefined ? formContent : (<DataFormContentComponent />)}
+                    </>
                 </Suspense>
                 {children}
             </Form>
