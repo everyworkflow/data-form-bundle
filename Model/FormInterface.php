@@ -24,6 +24,10 @@ interface FormInterface extends ArrayableInterface
     
     public function getFormUpdatePath(): ?string;
 
+    public function setIsSideFormAnchorEnable(bool $isSideFormAnchorEnable): self;
+
+    public function isSideFormAnchorEnable(): ?bool;
+
     public function getFormFieldFactory(): FormFieldFactoryInterface;
 
     public function getFormSectionFactory(): FormSectionFactoryInterface;

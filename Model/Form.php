@@ -44,13 +44,13 @@ class Form implements FormInterface
         return $this->dataObject->getData(self::KEY_FORM_UPDATE_PATH);
     }
 
-    public function setIsSideFormAnchorEnable(string $isSideFormAnchorEnable): self
+    public function setIsSideFormAnchorEnable(bool $isSideFormAnchorEnable): self
     {
         $this->dataObject->setData(self::KEY_IS_SIDE_FORM_ANCHOR_ENABLE, $isSideFormAnchorEnable);
         return $this;
     }
 
-    public function isSideFormAnchorEnable(): ?string
+    public function isSideFormAnchorEnable(): ?bool
     {
         return $this->dataObject->getData(self::KEY_IS_SIDE_FORM_ANCHOR_ENABLE);
     }
