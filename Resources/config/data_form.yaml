@@ -12,6 +12,7 @@ data_form:
         text_field: EveryWorkflow\DataFormBundle\Field\TextField
         textarea_field: EveryWorkflow\DataFormBundle\Field\TextareaField
         markdown_field: EveryWorkflow\DataFormBundle\Field\MarkdownField
+        wysiwyg_field: EveryWorkflow\DataFormBundle\Field\WysiwygField
         date_picker_field: EveryWorkflow\DataFormBundle\Field\DatePickerField
         time_picker_field: EveryWorkflow\DataFormBundle\Field\TimePickerField
         date_time_picker_field: EveryWorkflow\DataFormBundle\Field\DateTimePickerField

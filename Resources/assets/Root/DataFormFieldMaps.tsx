@@ -13,6 +13,9 @@ const TextareaField = lazy(
 const MarkdownField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/MarkdownField')
 );
+const WysiwygField = lazy(
+  () => import('@EveryWorkflow/DataFormBundle/Field/WysiwygField')
+);
 const ColorPickerField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/ColorPickerField')
 );
@@ -50,6 +53,7 @@ export const DataFormFieldMaps: any = {
   text_field: TextField,
   textarea_field: TextareaField,
   markdown_field: MarkdownField,
+  wysiwyg_field: WysiwygField,
   color_picker_field: ColorPickerField,
   date_picker_field: DatePickerField,
   time_picker_field: TimePickerField,
