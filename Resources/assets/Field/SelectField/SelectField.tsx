@@ -61,9 +61,10 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
                     disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     allowClear={fieldData.allow_clear ?? false}
                     onSearch={fieldData.is_searchable ? onSearch : undefined}
-                    filterOption={(input, option) =>
-                        option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    }>
+                    // filterOption={(input, option) =>
+                    //     option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                    // }
+                    >
                     {fieldData.options?.map(
                         (option: OptionInterface, index: number) => (
                             <Option key={index} value={option.key}>
