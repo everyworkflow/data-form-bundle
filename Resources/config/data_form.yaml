@@ -20,6 +20,7 @@ data_form:
         date_range_picker_field: EveryWorkflow\DataFormBundle\Field\DateRangePickerField
         date_time_range_picker_field: EveryWorkflow\DataFormBundle\Field\DateTimeRangePickerField
         select_field: EveryWorkflow\DataFormBundle\Field\SelectField
+        multi_select_field: EveryWorkflow\DataFormBundle\Field\MultiSelectField
         radio_field: EveryWorkflow\DataFormBundle\Field\RadioField
         check_field: EveryWorkflow\DataFormBundle\Field\CheckField
         switch_field: EveryWorkflow\DataFormBundle\Field\SwitchField

@@ -42,6 +42,7 @@ const RadioField = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/RadioField')
 );
 import SelectField from '@EveryWorkflow/DataFormBundle/Field/SelectField';
+import MultiSelectField from '@EveryWorkflow/DataFormBundle/Field/MultiSelectField';
 const Cascader = lazy(
   () => import('@EveryWorkflow/DataFormBundle/Field/Cascader')
 );
@@ -66,6 +67,7 @@ export const DataFormFieldMaps: any = {
   switch_field: SwitchField,
   radio_field: RadioField,
   select_field: SelectField,
+  multi_select_field: MultiSelectField,
   cascader: Cascader,
   tree_select_field: TreeSelectField,
   ...MediaFormFieldMaps,

@@ -32,7 +32,7 @@ class SelectField extends BaseField implements SelectFieldInterface
      */
     public function getOptions(): array
     {
-        return $this->dataObject->getData(self::KEY_OPTIONS);
+        return $this->dataObject->getData(self::KEY_OPTIONS) ?? [];
     }
 
     /**

@@ -27,21 +27,7 @@ const FieldRenderComponent = ({ fields = [] }: RenderFieldProps) => {
         });
     }, [fields]);
 
-    const generateFilledPath = (path: string, rowData: any) => {
-        Object.keys(rowData).forEach((itemKey: string) => {
-            path = path.replace(
-                '{' + itemKey + '}',
-                rowData[itemKey]
-            );
-        });
-        return path;
-    }
-
     const fieldActionHandler = (field: BaseFieldInterface, value: any, actionType = 'init') => {
-        // if (typeof value === 'boolean') {
-        //     value = Number(value);
-        // }
-
         const actions: Array<any> = field.field_actions[value] ?? [];
 
         let hiddenFieldNames = formState.hidden_field_names ?? [];

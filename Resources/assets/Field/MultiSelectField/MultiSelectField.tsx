@@ -10,11 +10,11 @@ import OptionInterface from '@EveryWorkflow/DataFormBundle/Model/Field/Select/Op
 import DynamicFieldPropsInterface from "@EveryWorkflow/DataFormBundle/Model/DynamicFieldPropsInterface";
 import FormContext from '@EveryWorkflow/DataFormBundle/Context/FormContext';
 
-interface SelectFieldProps extends DynamicFieldPropsInterface {
+interface MultiSelectFieldProps extends DynamicFieldPropsInterface {
     fieldData: SelectFieldInterface;
 }
 
-const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
+const MultiSelectField = ({ fieldData, onChange, children }: MultiSelectFieldProps) => {
     const { state: formState } = useContext(FormContext);
 
     const getErrorMessage = useCallback(() => {
@@ -47,21 +47,22 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
                 } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name].toString() : ''}
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name] : undefined}
                 validateStatus={getErrorMessage() ? 'error' : undefined}
                 help={getErrorMessage()}
                 rules={[{ required: fieldData.is_required }]}>
                 <Select
+                    mode="multiple"
                     showSearch={fieldData.is_searchable}
                     optionFilterProp="children"
                     onChange={handleChange}
                     disabled={fieldData.is_disabled || !!(fieldData.name && formState.disable_field_names?.includes(fieldData.name))}
                     allowClear={fieldData.allow_clear ?? false}
                     onSearch={fieldData.is_searchable ? onSearch : undefined}
-                    // filterOption={(input, option) =>
-                    //     option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    // }
-                    >
+                // filterOption={(input, option) =>
+                //     option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                // }
+                >
                     {fieldData.options?.map(
                         (option: OptionInterface, index: number) => (
                             <Select.Option key={index} value={option.key}>
@@ -76,4 +77,4 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
     );
 };
 
-export default SelectField;
+export default MultiSelectField;
