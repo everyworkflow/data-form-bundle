@@ -71,7 +71,7 @@ const DataFormPageComponent = ({
             try {
                 let path: string = getPath;
                 path = path.replace('{' + primaryKey + '}', urlParams[primaryKey] ?? 'create');
-                const response: any = await Remote.get(path);
+                const response: any = await Remote.get(path + '?for=data-form');
                 handleResponse(response);
                 setFormErrors(undefined);
             } catch (error: any) {
