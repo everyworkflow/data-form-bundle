@@ -47,7 +47,7 @@ const SelectField = ({ fieldData, onChange, children }: SelectFieldProps) => {
                 } : undefined}
                 name={fieldData.name}
                 label={fieldData.label}
-                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name].toString() : ''}
+                initialValue={(fieldData.name && formState.initial_values[fieldData.name]) ? formState.initial_values[fieldData.name].toString() : fieldData?.default_value}
                 validateStatus={getErrorMessage() ? 'error' : undefined}
                 help={getErrorMessage()}
                 rules={[{ required: fieldData.is_required }]}>
